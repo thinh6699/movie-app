@@ -23,7 +23,7 @@ i18n
   .init({
     resources,
     detection: { caches: ['localStorage'] }, // set where to save user language
-    fallbackLng: 'vi'
+    fallbackLng: 'en'
   })
 
 export default i18n

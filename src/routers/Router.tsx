@@ -1,6 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import LayoutMain from '../layouts/LayoutMain'
 import Home from '../pages/Home'
+import Movies from '../pages/Movies'
+import MovieForm from '../pages/Movies/Form'
+import Path from './Path'
 
 function Routers() {
   const RequireAuth = ({ children }: { children: JSX.Element }) => {
@@ -37,7 +40,10 @@ function Routers() {
           </RequireAuth>
         }
       >
-        <Route path='/' element={<Home />} />
+        <Route path={Path.home} element={<Home />} />
+        <Route path={Path.movies} element={<Movies />} />
+        <Route path={Path.movie_create} element={<MovieForm />} />
+        <Route path={Path.movie_edit()} element={<MovieForm />} />
       </Route>
     </Routes>
   )

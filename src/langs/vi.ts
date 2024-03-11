@@ -1,13 +1,9 @@
-export default {
-  language: {
-    en: 'Tiếng Anh',
-    vi: 'Tiếng Việt'
+const vi = {
+  validation_field: {
+    title: 'Tiêu đề'
   },
-  auth: {
-    login_form: 'Đăng nhập'
-  },
-  home: {
-    new_todo: 'Công việc mới',
-    logout: 'Đăng xuất'
+  validation_message: {
+    required: 'Vui lòng nhập {{- path}}'
   }
 }
+export default vi

@@ -6,18 +6,19 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { ChangeThemeSwitch } from '../helpers'
 import MenuIcon from '@mui/icons-material/Menu'
 import { IHeaderMenu } from '../models'
+import Path from '../routers/Path'
 
 function Header() {
   const lstMenu: IHeaderMenu[] = [
     {
       id: 1,
       title: 'Movies',
-      url: 'movies'
+      url: Path.movies
     },
     {
       id: 2,
       title: 'Celebrities',
-      url: 'celebrities'
+      url: Path.celebrities
     }
   ]
 
@@ -26,9 +27,9 @@ function Header() {
       <div className='container'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center'>
-            <div className='logo'>
+            <Link to={Path.home} className='logo'>
               <img src={logo} alt='logo'></img>
-            </div>
+            </Link>
 
             <div className='hidden md:flex items-center gap-5 text-headerMenuColor uppercase font-semibold ml-10'>
               {lstMenu.map((item: IHeaderMenu) => {

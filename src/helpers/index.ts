@@ -47,3 +47,40 @@ export const ChangeThemeSwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 20 / 2
   }
 }))
+
+export const isNewFileUploading = (file: any) => {
+  return typeof file !== 'string'
+}
+
+export const appendFormData = (model: any) => {
+  const formData = new FormData()
+  Object.keys(model).forEach(property => {
+    formData.append(property, model[property] ? model[property] : '')
+  })
+  return formData
+}
+
+export const removeFieldEmptyValue = (obj: any) => {
+  const newObj = Object.keys(obj)
+    .filter(key => !!obj[key])
+    .reduce((current, key) => ({ ...current, [key]: obj[key] }), {})
+  return newObj
+}
+
+export const checkValueChange = (
+  initialValues: any,
+  currentValues: any,
+  allowComparisonField: any
+) => {
+  if (allowComparisonField) {
+    const objA = {} as any
+    const objB = {} as any
+
+    allowComparisonField?.forEach((field: any) => {
+      objA[field] = initialValues[field]
+      objB[field] = currentValues[field]
+    })
+    return JSON.stringify(objA) !== JSON.stringify(objB)
+  }
+  return JSON.stringify(initialValues) !== JSON.stringify(currentValues)
+}

@@ -29,7 +29,7 @@ function MovieItem(props: Props) {
       <div className='absolute bottom-4 px-6 w-full'>
         {showCategory && (
           <div className='flex flex-wrap gap-2 mb-1'>
-            {movie?.categories?.map((category: string) => {
+            {movie?.categories?.map((category: number) => {
               return (
                 <div
                   key={category}

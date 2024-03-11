@@ -9,67 +9,58 @@ const baseAxios = axios.create({
   }
 })
 
-// client.interceptors.request.use(
-//   (config: any) => {
-//     const token = store.getState()?.auth.token?.accessToken || ''
-//     if (token) {
-//       config.headers = {
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'application/json;charset=UTF-8',
-//         Accept: 'application/json',
-//         'Access-Control-Allow-Origin': '*'
-//       }
-//     }
-//     return config
-//   },
-//   error => Promise.reject(error)
-// )
+baseAxios.interceptors.request.use(
+  (config: any) => {
+    return config
+  },
+  error => Promise.reject(error)
+)
 
-// client.interceptors.response.use(
-//   res => res,
-//   async err => {
-//     const originalConfig = err.config
-//     // if (err.response.status === 400) {
-//     //   // handle error
-//     //   return Promise.reject(new Error("Bad Request"));
-//     // }
-//     if (originalConfig.url !== '/auth/signin' && err.response) {
-//       /* eslint no-underscore-dangle: 0 */
-//       if (err.response.status === 401) {
-//         originalConfig._retry = true
-//         try {
-//           const data = {
-//             refreshToken: store.getState()?.auth.token?.refreshToken || ''
-//           }
-//           if (data) {
-//             const res = await client.post(
-//               'auth/refresh-token',
-//               JSON.stringify(data)
-//             )
-//             const user = jwt(res.data.data.accessToken)
-//             const token = {
-//               accessToken: res.data.data.accessToken,
-//               refreshToken: res.data.data.refreshToken
-//             }
-//             store.dispatch(setAuthUser(user))
-//             store.dispatch(setAuthToken(token))
-//             return client(originalConfig)
-//           }
-//         } catch (_error) {
-//           return Promise.reject(_error)
-//         }
-//       }
-//     }
-//     // if (err.response.status === 403) {
-//     //   // handle error
-//     //   return Promise.reject(new Error("Forbidden"));
-//     // }
-//     // if (err.response.status === 404) {
-//     //   // handle error
-//     //   return Promise.reject(new Error("Not Found"));
-//     // }
-//     return Promise.reject(err)
-//   }
-// )
+baseAxios.interceptors.response.use(
+  res => res,
+  async err => {
+    // const originalConfig = err.config
+    // if (err.response.status === 400) {
+    //   // handle error
+    //   return Promise.reject(new Error("Bad Request"));
+    // }
+    // if (originalConfig.url !== '/auth/signin' && err.response) {
+    //   /* eslint no-underscore-dangle: 0 */
+    //   if (err.response.status === 401) {
+    //     originalConfig._retry = true
+    //     try {
+    //       const data = {
+    //         refreshToken: store.getState()?.auth.token?.refreshToken || ''
+    //       }
+    //       if (data) {
+    //         const res = await client.post(
+    //           'auth/refresh-token',
+    //           JSON.stringify(data)
+    //         )
+    //         const user = jwt(res.data.data.accessToken)
+    //         const token = {
+    //           accessToken: res.data.data.accessToken,
+    //           refreshToken: res.data.data.refreshToken
+    //         }
+    //         store.dispatch(setAuthUser(user))
+    //         store.dispatch(setAuthToken(token))
+    //         return client(originalConfig)
+    //       }
+    //     } catch (_error) {
+    //       return Promise.reject(_error)
+    //     }
+    //   }
+    // }
+    // if (err.response.status === 403) {
+    //   // handle error
+    //   return Promise.reject(new Error("Forbidden"));
+    // }
+    // if (err.response.status === 404) {
+    //   // handle error
+    //   return Promise.reject(new Error("Not Found"));
+    // }
+    return Promise.reject(err)
+  }
+)
 
 export default baseAxios

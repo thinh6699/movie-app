@@ -4,13 +4,11 @@ import { store } from './apps/store'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import i18n from './langs'
+import './validation'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
+import './assets/scss/index.scss'
 
 const container = document.getElementById('root')!
 const root = createRoot(container)

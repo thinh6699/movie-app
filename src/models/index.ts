@@ -1,10 +1,10 @@
 export interface IMovie {
-  id: number
+  id?: number
   title: string
   rating: number | null
-  categories: string[]
-  background_url: string
-  type: string
+  categories: number[]
+  background_url?: string
+  description: string
 }
 
 export interface IHeaderMenu {
@@ -17,4 +17,9 @@ export interface ICelebrity {
   id: number
   name: string
   image_url: string
+}
+
+export interface IMovieCategory {
+  id: number
+  name: string
 }

@@ -1,0 +1,77 @@
+// Import Swiper styles
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/navigation';
+
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 400px) {
+  .custom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.required {
+  position: relative;
+  &::after {
+    content: '*' !important;
+    position: absolute;
+    right: -10px;
+    color: #f00;
+  }
+}
+
+.errors-msg {
+  color: red !important;
+  font-size: 14px !important;
+}
+
+.input {
+  border-radius: 4px;
+  outline: none;
+  padding: 8px 12px;
+  color: #000;
+  font-weight: 500;
+}
+
+.custom {
+  .MuiDataGrid-columnSeparator {
+    display: none !important;
+  }
+
+  .MuiDataGrid-columnHeaderTitle {
+    font-weight: 700;
+  }
+
+  &__table-pagination {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    margin-bottom: 24px;
+  }
+}
+
+.MuiDataGrid-root {
+  .MuiDataGrid-cell:focus-within,
+  .MuiDataGrid-columnHeader:focus-within {
+    outline: none !important;
+  }
+}
+
+.MuiButton-root.Mui-disabled {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  pointer-events: auto !important;
+  cursor: not-allowed !important;
+}

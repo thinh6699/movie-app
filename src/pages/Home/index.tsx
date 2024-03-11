@@ -4,8 +4,8 @@ import { ICelebrity, IMovie } from '../../models'
 import MovieItem from './MovieItem'
 import SearchComponent from '../../components/SearchComponent'
 import { useEffect, useState } from 'react'
-import { celebrityList, movieList } from '../../services'
-import { MOVIE_TYPE, RESPONSE_STATUS } from '../../constants'
+import { celebrityList } from '../../services'
+import { RESPONSE_STATUS } from '../../constants'
 
 function Home() {
   const [topRatedMovies, setTopRatedMovies] = useState<IMovie[]>([])
@@ -32,24 +32,26 @@ function Home() {
   }
 
   useEffect(() => {
-    getMovieList()
+    setFavoriteMovies([])
+    setTopRatedMovies([])
+    // getMovieList()
     getCelebrityList()
   }, [])
 
-  const getMovieList = async () => {
-    const movieResponse = await movieList()
-    const { status, data } = movieResponse || {}
-    if (status === RESPONSE_STATUS.SUCCESS && data) {
-      let favoriteMovies = data.filter(
-        (item: IMovie) => item.type === MOVIE_TYPE.FAVORITE
-      )
-      let topRatedMovies = data.filter(
-        (item: IMovie) => item.type === MOVIE_TYPE.TOP_RATED
-      )
-      setFavoriteMovies(favoriteMovies)
-      setTopRatedMovies(topRatedMovies)
-    }
-  }
+  // const getMovieList = async () => {
+  //   const movieResponse = await movieList()
+  //   const { status, data } = movieResponse || {}
+  //   if (status === RESPONSE_STATUS.SUCCESS && data) {
+  //     let favoriteMovies = data.filter(
+  //       (item: IMovie) => item.type === MOVIE_TYPE.FAVORITE
+  //     )
+  //     let topRatedMovies = data.filter(
+  //       (item: IMovie) => item.type === MOVIE_TYPE.TOP_RATED
+  //     )
+  //     setFavoriteMovies(favoriteMovies)
+  //     setTopRatedMovies(topRatedMovies)
+  //   }
+  // }
 
   const getCelebrityList = async () => {
     const celebResponse = await celebrityList()
