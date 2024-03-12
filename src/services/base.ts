@@ -16,7 +16,6 @@ baseAxios.interceptors.request.use(
     if (token) {
       config.headers = {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json;charset=UTF-8',
         Accept: 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
