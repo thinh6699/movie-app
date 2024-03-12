@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from 'stores/store'
 
 const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -11,6 +12,15 @@ const baseAxios = axios.create({
 
 baseAxios.interceptors.request.use(
   (config: any) => {
+    const token = store.getState()?.token || ''
+    if (token) {
+      config.headers = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json;charset=UTF-8',
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
     return config
   },
   error => Promise.reject(error)

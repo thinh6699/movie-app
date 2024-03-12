@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from './apps/store';
+import store from './stores/store'
 
 test('renders learn react link', () => {
   const { getByText } = render(

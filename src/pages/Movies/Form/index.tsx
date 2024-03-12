@@ -1,8 +1,7 @@
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import * as Yup from 'yup'
 import { MAX_FILE_SIZE, MAX_INPUT_TEXT } from 'helpers/constants'
-import { checkValueChange, isNewFileUploading } from 'helpers'
+import { checkValueChange, isNewFileUploading, MenuProps } from 'helpers'
 import { IMovie, IMovieCategory } from 'models'
 import { Rating } from '@mui/material'
 import { useEffect, useState, useRef, useCallback } from 'react'
@@ -21,54 +20,21 @@ import ListItemText from '@mui/material/ListItemText'
 import Select from '@mui/material/Select'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
-import i18next from 'i18next'
 import { uploadFile } from 'services/CommonService'
 import { useNavigate, useParams } from 'react-router-dom'
 import Path from 'routers/Path'
 import { toast } from 'react-toastify'
 import LayoutMain from 'layouts/LayoutMain'
 import FormItem, { TYPE_INPUT } from 'components/FormItem'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-}
+import { movieInitialValues, movieSchema } from 'utils/schema/movie'
 
 function MovieForm() {
-  const { t } = useTranslation()
   const navigate = useNavigate()
-  const [categoryList, setCategoryList] = useState<IMovieCategory[]>([])
-  const initialValues: IMovie = {
-    title: '',
-    rating: null,
-    categories: [],
-    background_url: '',
-    description: ''
-  }
+  const { t } = useTranslation()
   const { id } = useParams()
   const formikRef = useRef<any>()
+  const [categoryList, setCategoryList] = useState<IMovieCategory[]>([])
   const [formValues, setFormValues] = useState(null)
-
-  const validationSchema = Yup.object().shape({
-    title: Yup.string().required(),
-    rating: Yup.number().required(),
-    categories: Yup.array()
-      .required()
-      .min(
-        1,
-        i18next.t('validation_message.required', {
-          path: i18next.t(`validation_field.categories`)
-        })
-      ),
-    background_url: Yup.string().required(),
-    description: Yup.string().required()
-  })
 
   const getMovieCategories = async () => {
     const response = await movieCategoryList()
@@ -81,9 +47,9 @@ function MovieForm() {
       if (formikRef && formikRef.current) {
         const { setValues } = formikRef.current
         const { data } = detailResponse?.data || {}
-        const categoryIds = data?.categories?.map((item: any) => item.id) || []
-        setFormValues({ ...data, categoryIds })
-        setValues({ ...data, categoryIds })
+        const categories = data?.categories?.map((item: any) => item.id) || []
+        setFormValues({ ...data, categories })
+        setValues({ ...data, categories })
       }
     } catch (error: any) {
       toast.error(error.response.data.message)
@@ -150,8 +116,7 @@ function MovieForm() {
 
     if (isNewFileUploading(values.background_url)) {
       const data = {
-        file: values.background_url,
-        type: (values.background_url as any)?.type
+        file: values.background_url
       }
       const uploadResponse = await uploadFile(data).catch((error: any) => {
         toast.error(error.response.data.message || 'Upload error')
@@ -179,8 +144,8 @@ function MovieForm() {
         <div className='flex justify-center'>
           <div className='max-w-[500px] w-full'>
             <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
+              initialValues={movieInitialValues}
+              validationSchema={movieSchema}
               onSubmit={onSubmit}
               innerRef={formikRef}
             >
@@ -203,7 +168,7 @@ function MovieForm() {
                             root: '!uppercase !bg-loginBtnBg !font-semibold !min-w-[100px]'
                           }}
                         >
-                          Delete
+                          {t('common.delete')}
                         </Button>
                       </div>
                     )}
@@ -233,7 +198,7 @@ function MovieForm() {
                       >
                         {!values.background_url && (
                           <span className='absolute top-1/2 left-1/2 -translate-y-1/2	-translate-x-1/2'>
-                            Choose image
+                            {t('choose_image')}
                           </span>
                         )}
                         <input
@@ -302,7 +267,7 @@ function MovieForm() {
                       <div>
                         <FormControl sx={{ width: '100%', maxWidth: 300 }}>
                           <InputLabel className='!text-white'>
-                            Categories
+                            {t('validation_field.categories')}
                           </InputLabel>
                           <Select
                             name='categories'
@@ -367,7 +332,7 @@ function MovieForm() {
                           root: '!uppercase !bg-loginBtnBg !font-semibold !min-w-[100px]'
                         }}
                       >
-                        {id ? 'Save' : 'Create'}
+                        {id ? t('common.save') : t('common.create')}
                       </Button>
                     </div>
                   </Form>

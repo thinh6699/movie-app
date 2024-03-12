@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { store } from './apps/store'
+import store from 'stores/store'
 import reportWebVitals from './reportWebVitals'
 import i18n from './langs'
 import './validation'
@@ -15,7 +15,7 @@ const root = createRoot(container)
 root.render(
   <Provider store={store}>
     <I18nextProvider i18n={i18n}>
-        <Routers />
+      <Routers />
     </I18nextProvider>
   </Provider>
 )

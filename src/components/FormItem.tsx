@@ -11,6 +11,7 @@ type FormItemProps = {
   onChange?: () => void
   typeInput?: string
   placeholder?: string
+  type?: string
 }
 
 export const TYPE_INPUT = {
@@ -34,7 +35,8 @@ function FormItem(props: FormItemProps) {
     required,
     onChange,
     typeInput = TYPE_INPUT.TEXT,
-    placeholder
+    placeholder,
+    type
   } = props
 
   const renderTextInput = ({ field, form }: any) => {
@@ -52,6 +54,7 @@ function FormItem(props: FormItemProps) {
         name={fieldName}
         placeholder={placeholder}
         maxLength={maxLength}
+        type={type}
         className={cx('input block w-full', inputClassName)}
         onChange={(e: any) => onInputChange(e)}
       />

@@ -7,8 +7,10 @@ import { ChangeThemeSwitch } from 'helpers'
 import MenuIcon from '@mui/icons-material/Menu'
 import { IHeaderMenu } from 'models'
 import Path from 'routers/Path'
+import { useTranslation } from 'react-i18next'
 
 function Header() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const lstMenu: IHeaderMenu[] = [
     {
@@ -61,7 +63,7 @@ function Header() {
                 root: '!rounded-full !uppercase !bg-loginBtnBg !font-semibold'
               }}
             >
-              Login
+              {t('common.login')}
             </Button>
 
             <MenuIcon className='md:!hidden ml-3' fontSize='large' />

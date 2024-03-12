@@ -111,7 +111,7 @@ function Movies() {
     <LayoutMain>
       <div className='container'>
         <div className='flex items-center justify-between gap-3 mb-6'>
-          <div className='text-[24px]'>List Movies</div>
+          <div className='text-[24px]'>{t('movies.list_title')}</div>
           <Button
             variant='contained'
             classes={{
@@ -119,7 +119,7 @@ function Movies() {
             }}
             onClick={() => navigate(Path.movie_create)}
           >
-            + Add Movie
+            {`+ ${t('movies.create_movie')}`}
           </Button>
         </div>
 
@@ -155,7 +155,7 @@ function Movies() {
               }
             }}
           >
-            Search
+            {t('common.search')}
           </Button>
         </div>
 

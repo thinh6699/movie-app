@@ -23,3 +23,8 @@ export interface IMovieCategory {
   id: number
   name: string
 }
+
+export interface ILogin {
+  email: string
+  password: string
+}
