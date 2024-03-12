@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
+import { TIMEOUT } from './constants'
 
 export const ChangeThemeSwitch = styled(Switch)(({ theme }) => ({
   width: 62,

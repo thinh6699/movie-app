@@ -1,6 +1,6 @@
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { MAX_FILE_SIZE, MAX_INPUT_TEXT } from 'helpers/constants'
+import { MAX_FILE_SIZE, MAX_INPUT_TEXT, TIMEOUT } from 'helpers/constants'
 import { checkValueChange, isNewFileUploading, MenuProps } from 'helpers'
 import { IMovie, IMovieCategory } from 'models'
 import { Rating } from '@mui/material'
@@ -98,7 +98,10 @@ function MovieForm() {
   const deleteMovie = async () => {
     try {
       const deleteResponse = await movieDelete(Number(id))
-      toast.success(deleteResponse.data.message)
+      const toastPromise = new Promise(resolve => setTimeout(resolve, TIMEOUT))
+      toast.promise(toastPromise, {
+        success: deleteResponse.data.message
+      })
       navigate(Path.movies)
     } catch (error: any) {
       toast.error(error.response.data.message)
@@ -131,7 +134,10 @@ function MovieForm() {
 
     try {
       const res = await apiUrl
-      toast.success(res.data.message)
+      const toastPromise = new Promise(resolve => setTimeout(resolve, TIMEOUT))
+      toast.promise(toastPromise, {
+        success: res.data.message
+      })
       navigate(Path.movies)
     } catch (error: any) {
       toast.error(error.response.data.message)

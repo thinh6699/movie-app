@@ -7,7 +7,7 @@ import { movieList } from 'services/MovieService'
 import { useTranslation } from 'react-i18next'
 import { Rating } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { PER_PAGE } from 'helpers/constants'
+import { PER_PAGE, TIMEOUT } from 'helpers/constants'
 import { removeFieldEmptyValue } from 'helpers'
 import LayoutMain from 'layouts/LayoutMain'
 
@@ -36,7 +36,7 @@ function Movies() {
     }).finally(() =>
       setTimeout(() => {
         setLoading(false)
-      }, 700)
+      }, TIMEOUT)
     )
     setLstMovie([...response.data.data])
     setTotalItem(response.data.total)
@@ -87,7 +87,7 @@ function Movies() {
         return (
           <div className='w-[100px] flex-shrink-0 h-full pr-2 py-2'>
             <img
-              className='w-full h-full object-cover'
+              className='w-full h-full object-cover rounded-[4px]'
               src={backgroundUrl}
               alt=''
             />

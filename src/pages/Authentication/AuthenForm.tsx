@@ -3,7 +3,7 @@ import { loginInitialValues, loginSchema } from 'utils/schema/authentication'
 import { useRef } from 'react'
 import FormItem from 'components/FormItem'
 import { useTranslation } from 'react-i18next'
-import { MAX_INPUT_TEXT, MAX_PASSWORD_TEXT } from 'helpers/constants'
+import { MAX_INPUT_TEXT, MAX_PASSWORD_TEXT, TIMEOUT } from 'helpers/constants'
 import Button from '@mui/material/Button'
 import { ILogin } from 'models'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -36,7 +36,10 @@ function AuthenForm() {
     const apiUrl = isLoginPage() ? signIn(payload) : signUp(payload)
     try {
       const response = await apiUrl
-      toast.success(response.data.message)
+      const toastPromise = new Promise(resolve => setTimeout(resolve, TIMEOUT))
+      toast.promise(toastPromise, {
+        success: response.data.message
+      })
       if (isLoginPage()) {
         dispatch(saveToken(response.data.access_token))
         navigate(previousRoute)
@@ -109,7 +112,7 @@ function AuthenForm() {
       </div>
       <ToastContainer
         position='top-right'
-        autoClose={2000}
+        autoClose={5000}
         hideProgressBar
         newestOnTop
         closeOnClick

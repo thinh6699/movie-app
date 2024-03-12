@@ -19,7 +19,7 @@ const en = {
     delete: 'Delete',
     create: 'Create',
     save: 'Save',
-    seacrh: 'Search',
+    search: 'Search',
     sign_up: 'Sign up'
   },
   choose_image: 'Choose Image',
