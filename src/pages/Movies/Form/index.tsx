@@ -1,9 +1,9 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as Yup from 'yup'
-import { MAX_FILE_SIZE, MAX_INPUT_TEXT } from '../../../constants'
-import { checkValueChange, isNewFileUploading } from '../../../helpers'
-import { IMovie, IMovieCategory } from '../../../models'
+import { MAX_FILE_SIZE, MAX_INPUT_TEXT } from 'helpers/constants'
+import { checkValueChange, isNewFileUploading } from 'helpers'
+import { IMovie, IMovieCategory } from 'models'
 import { Rating } from '@mui/material'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import {
@@ -12,7 +12,7 @@ import {
   movieDelete,
   movieDetail,
   movieUpdate
-} from '../../../services/MovieService'
+} from 'services/MovieService'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -22,10 +22,12 @@ import Select from '@mui/material/Select'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import i18next from 'i18next'
-import { uploadFile } from '../../../services/CommonService'
+import { uploadFile } from 'services/CommonService'
 import { useNavigate, useParams } from 'react-router-dom'
-import Path from '../../../routers/Path'
+import Path from 'routers/Path'
 import { toast } from 'react-toastify'
+import LayoutMain from 'layouts/LayoutMain'
+import FormItem, { TYPE_INPUT } from 'components/FormItem'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -172,229 +174,210 @@ function MovieForm() {
   }
 
   return (
-    <div className='container'>
-      <div className='flex justify-center'>
-        <div className='max-w-[500px] w-full'>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-            innerRef={formikRef}
-          >
-            {props => {
-              const { setFieldValue, setFieldError, values, handleBlur } = props
-              const isValuesHasChanged = checkValueChange(
-                formValues,
-                values,
-                false
-              )
-              return (
-                <Form className='flex flex-col gap-4'>
-                  {id && (
-                    <div className='flex items-center justify-end'>
+    <LayoutMain>
+      <div className='container'>
+        <div className='flex justify-center'>
+          <div className='max-w-[500px] w-full'>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              innerRef={formikRef}
+            >
+              {props => {
+                const { setFieldValue, setFieldError, values, handleBlur } =
+                  props
+                const isValuesHasChanged = checkValueChange(
+                  formValues,
+                  values,
+                  false
+                )
+                return (
+                  <Form className='flex flex-col gap-4'>
+                    {id && (
+                      <div className='flex items-center justify-end'>
+                        <Button
+                          onClick={deleteMovie}
+                          variant='contained'
+                          classes={{
+                            root: '!uppercase !bg-loginBtnBg !font-semibold !min-w-[100px]'
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    )}
+                    <FormItem
+                      label={t('validation_field.title')}
+                      fieldName='title'
+                      maxLength={MAX_INPUT_TEXT}
+                      required
+                    />
+
+                    <FormItem
+                      label={t('validation_field.description')}
+                      fieldName='description'
+                      maxLength={MAX_INPUT_TEXT}
+                      typeInput={TYPE_INPUT.TEXT_AREA}
+                      inputClassName='h-[200px] resize-none'
+                      required
+                    />
+
+                    <div className='form-item'>
+                      <p className='required inline-block text-base mb-1'>
+                        {t('validation_field.background_url')}
+                      </p>
+                      <label
+                        htmlFor='background_url'
+                        className='block relative pt-[56.25%] overflow-hidden text-center border rounded-[8px] px-3 py-1 cursor-pointer'
+                      >
+                        {!values.background_url && (
+                          <span className='absolute top-1/2 left-1/2 -translate-y-1/2	-translate-x-1/2'>
+                            Choose image
+                          </span>
+                        )}
+                        <input
+                          className='w-0 h-0 overflow-hidden'
+                          onClick={(e: any) => {
+                            e.target.value = null
+                          }}
+                          onChange={(e: any) => {
+                            onImageChange(e, setFieldValue, setFieldError)
+                          }}
+                          onBlur={handleBlur}
+                          id='background_url'
+                          type='file'
+                          name='background_url'
+                        />
+                        {values?.background_url && (
+                          <img
+                            alt=''
+                            className='absolute top-0 left-0 w-full h-full'
+                            src={
+                              isNewFileUploading(values?.background_url)
+                                ? URL.createObjectURL(
+                                    values?.background_url as any
+                                  )
+                                : values?.background_url
+                            }
+                          />
+                        )}
+                      </label>
+                      <ErrorMessage
+                        name='background_url'
+                        component='div'
+                        className='errors-msg'
+                      />
+                    </div>
+
+                    <div className='form-item'>
+                      <label className='required inline-block text-base mb-1'>
+                        {t('validation_field.rating')}
+                      </label>
+                      <div>
+                        <Rating
+                          value={values.rating}
+                          name='rating'
+                          precision={0.1}
+                          size='large'
+                          onChange={(_: any, newValue: any) => {
+                            setFieldValue('rating', newValue)
+                          }}
+                          classes={{
+                            icon: '!text-[#FAAF00]'
+                          }}
+                        />
+                      </div>
+                      <ErrorMessage
+                        name='rating'
+                        component='div'
+                        className='errors-msg'
+                      />
+                    </div>
+
+                    <div className='form-item'>
+                      <label className='required inline-block text-base mb-1'>
+                        {t('validation_field.categories')}
+                      </label>
+                      <div>
+                        <FormControl sx={{ width: '100%', maxWidth: 300 }}>
+                          <InputLabel className='!text-white'>
+                            Categories
+                          </InputLabel>
+                          <Select
+                            name='categories'
+                            multiple
+                            value={values.categories}
+                            onChange={(event: any) => {
+                              const { value } = event.target
+                              setFieldValue(
+                                'categories',
+                                typeof value === 'string'
+                                  ? value.split(',')
+                                  : value
+                              )
+                            }}
+                            input={
+                              <OutlinedInput
+                                classes={{
+                                  root: 'border border-solid border-white'
+                                }}
+                              />
+                            }
+                            renderValue={() => {
+                              const selectedValue = categoryList
+                                .filter((item: IMovieCategory) =>
+                                  values.categories.includes(item.id)
+                                )
+                                .map((item: IMovieCategory) => item.name)
+                              return selectedValue.join(', ')
+                            }}
+                            MenuProps={MenuProps}
+                            classes={{
+                              icon: '!text-white',
+                              outlined: '!text-white'
+                            }}
+                          >
+                            {categoryList.map((category: IMovieCategory) => (
+                              <MenuItem key={category.id} value={category.id}>
+                                <Checkbox
+                                  checked={
+                                    values.categories.indexOf(category.id) > -1
+                                  }
+                                />
+                                <ListItemText primary={category.name} />
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </div>
+                      <ErrorMessage
+                        name='categories'
+                        component='div'
+                        className='errors-msg'
+                      />
+                    </div>
+
+                    <div className='flex items-center justify-center pt-4'>
                       <Button
-                        onClick={deleteMovie}
+                        disabled={!isValuesHasChanged}
+                        type='submit'
                         variant='contained'
                         classes={{
                           root: '!uppercase !bg-loginBtnBg !font-semibold !min-w-[100px]'
                         }}
                       >
-                        Delete
+                        {id ? 'Save' : 'Create'}
                       </Button>
                     </div>
-                  )}
-                  <div className='form-item'>
-                    <label className='required inline-block text-base mb-1'>
-                      {t('validation_field.title')}
-                    </label>
-                    <Field
-                      className='input block w-full'
-                      name='title'
-                      maxLength={MAX_INPUT_TEXT}
-                      onChange={(e: any) =>
-                        setFieldValue('title', e.target.value)
-                      }
-                    />
-                    <ErrorMessage
-                      name='title'
-                      component='div'
-                      className='errors-msg'
-                    />
-                  </div>
-
-                  <div className='form-item'>
-                    <label className='required inline-block text-base mb-1'>
-                      {t('validation_field.description')}
-                    </label>
-                    <Field
-                      as='textarea'
-                      className='input block w-full h-[200px] resize-none'
-                      name='description'
-                      maxLength={MAX_INPUT_TEXT}
-                      onChange={(e: any) =>
-                        setFieldValue('description', e.target.value)
-                      }
-                    />
-                    <ErrorMessage
-                      name='description'
-                      component='div'
-                      className='errors-msg'
-                    />
-                  </div>
-
-                  <div className='form-item'>
-                    <p className='required inline-block text-base mb-1'>
-                      {t('validation_field.background_url')}
-                    </p>
-                    <label
-                      htmlFor='background_url'
-                      className='block relative pt-[56.25%] overflow-hidden text-center border rounded-[8px] px-3 py-1 cursor-pointer'
-                    >
-                      {!values.background_url && (
-                        <span className='absolute top-1/2 left-1/2 -translate-y-1/2	-translate-x-1/2'>
-                          Choose image
-                        </span>
-                      )}
-                      <input
-                        className='w-0 h-0 overflow-hidden'
-                        onClick={(e: any) => {
-                          e.target.value = null
-                        }}
-                        onChange={(e: any) => {
-                          onImageChange(e, setFieldValue, setFieldError)
-                        }}
-                        onBlur={handleBlur}
-                        id='background_url'
-                        type='file'
-                        name='background_url'
-                      />
-                      {values?.background_url && (
-                        <img
-                          alt=''
-                          className='absolute top-0 left-0 w-full h-full'
-                          src={
-                            isNewFileUploading(values?.background_url)
-                              ? URL.createObjectURL(
-                                  values?.background_url as any
-                                )
-                              : values?.background_url
-                          }
-                        />
-                      )}
-                    </label>
-                    <ErrorMessage
-                      name='background_url'
-                      component='div'
-                      className='errors-msg'
-                    />
-                  </div>
-
-                  <div className='form-item'>
-                    <label className='required inline-block text-base mb-1'>
-                      {t('validation_field.rating')}
-                    </label>
-                    <div>
-                      <Rating
-                        value={values.rating}
-                        name='rating'
-                        precision={0.1}
-                        size='large'
-                        onChange={(event, newValue) => {
-                          setFieldValue('rating', newValue)
-                        }}
-                        classes={{
-                          icon: '!text-[#FAAF00]'
-                        }}
-                      />
-                    </div>
-                    <ErrorMessage
-                      name='rating'
-                      component='div'
-                      className='errors-msg'
-                    />
-                  </div>
-
-                  <div className='form-item'>
-                    <label className='required inline-block text-base mb-1'>
-                      {t('validation_field.categories')}
-                    </label>
-                    <div>
-                      <FormControl sx={{ width: '100%', maxWidth: 300 }}>
-                        <InputLabel className='!text-white'>
-                          Categories
-                        </InputLabel>
-                        <Select
-                          name='categories'
-                          multiple
-                          value={values.categories}
-                          onChange={event => {
-                            const { value } = event.target
-                            setFieldValue(
-                              'categories',
-                              typeof value === 'string'
-                                ? value.split(',')
-                                : value
-                            )
-                          }}
-                          input={
-                            <OutlinedInput
-                              label='Tag'
-                              className='border border-solid border-white'
-                            />
-                          }
-                          renderValue={selected => {
-                            const selectedValue = categoryList
-                              .filter((item: IMovieCategory) =>
-                                values.categories.includes(item.id)
-                              )
-                              .map((item: IMovieCategory) => item.name)
-                            return selectedValue.join(', ')
-                          }}
-                          MenuProps={MenuProps}
-                          classes={{
-                            icon: '!text-white',
-                            outlined: '!text-white'
-                          }}
-                        >
-                          {categoryList.map((category: IMovieCategory) => (
-                            <MenuItem key={category.id} value={category.id}>
-                              <Checkbox
-                                checked={
-                                  values.categories.indexOf(category.id) > -1
-                                }
-                              />
-                              <ListItemText primary={category.name} />
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </div>
-                    <ErrorMessage
-                      name='categories'
-                      component='div'
-                      className='errors-msg'
-                    />
-                  </div>
-
-                  <div className='flex items-center justify-center pt-4'>
-                    <Button
-                      disabled={!isValuesHasChanged}
-                      type='submit'
-                      variant='contained'
-                      classes={{
-                        root: '!uppercase !bg-loginBtnBg !font-semibold !min-w-[100px]'
-                      }}
-                    >
-                      {id ? 'Save' : 'Create'}
-                    </Button>
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
+                  </Form>
+                )
+              }}
+            </Formik>
+          </div>
         </div>
       </div>
-    </div>
+    </LayoutMain>
   )
 }
 

@@ -1,11 +1,12 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper'
-import { ICelebrity, IMovie } from '../../models'
+import { ICelebrity, IMovie } from 'models'
 import MovieItem from './MovieItem'
-import SearchComponent from '../../components/SearchComponent'
+import SearchComponent from 'components/SearchComponent'
 import { useEffect, useState } from 'react'
-import { celebrityList } from '../../services'
-import { RESPONSE_STATUS } from '../../constants'
+import { celebrityList } from 'services'
+import { RESPONSE_STATUS } from 'helpers/constants'
+import LayoutMain from 'layouts/LayoutMain'
 
 function Home() {
   const [topRatedMovies, setTopRatedMovies] = useState<IMovie[]>([])
@@ -62,7 +63,7 @@ function Home() {
   }
 
   return (
-    <>
+    <LayoutMain>
       <SearchComponent />
 
       {topRatedMovies.length > 0 && (
@@ -193,7 +194,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </>
+    </LayoutMain>
   )
 }
 

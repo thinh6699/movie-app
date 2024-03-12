@@ -1,14 +1,13 @@
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './apps/store'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
 import i18n from './langs'
 import './validation'
 import { I18nextProvider } from 'react-i18next'
-import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import './assets/scss/index.scss'
+import Routers from 'routers/Router'
 
 const container = document.getElementById('root')!
 const root = createRoot(container)
@@ -16,9 +15,7 @@ const root = createRoot(container)
 root.render(
   <Provider store={store}>
     <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+        <Routers />
     </I18nextProvider>
   </Provider>
 )

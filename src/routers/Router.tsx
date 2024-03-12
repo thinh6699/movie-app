@@ -1,12 +1,12 @@
-import { Route, Routes } from 'react-router-dom'
-import LayoutMain from '../layouts/LayoutMain'
-import Home from '../pages/Home'
-import Movies from '../pages/Movies'
-import MovieForm from '../pages/Movies/Form'
+import { Route, Routes, Outlet, BrowserRouter } from 'react-router-dom'
+import Home from 'pages/Home'
+import Movies from 'pages/Movies'
+import MovieForm from 'pages/Movies/Form'
 import Path from './Path'
+import Login from 'pages/Authentication/Login'
 
 function Routers() {
-  const RequireAuth = ({ children }: { children: JSX.Element }) => {
+  const RequireAuth = () => {
     // const token = store.getState().token
     // const location = useLocation()
 
@@ -24,28 +24,21 @@ function Routers() {
     //     />
     //   )
     // }
-    return children
+    return <Outlet />
   }
 
   return (
-    <Routes>
-      {/* <Route element={<LayoutAuth />}>
-        <Route path='login' element={<Login />} />
-        <Route path='line-login' element={<LineLogin />} />
-      </Route> */}
-      <Route
-        element={
-          <RequireAuth>
-            <LayoutMain />
-          </RequireAuth>
-        }
-      >
-        <Route path={Path.home} element={<Home />} />
-        <Route path={Path.movies} element={<Movies />} />
-        <Route path={Path.movie_create} element={<MovieForm />} />
-        <Route path={Path.movie_edit()} element={<MovieForm />} />
-      </Route>
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RequireAuth />}>
+          <Route path={Path.login} element={<Login />} />
+          <Route path={Path.home} element={<Home />} />
+          <Route path={Path.movies} element={<Movies />} />
+          <Route path={Path.movie_create} element={<MovieForm />} />
+          <Route path={Path.movie_edit()} element={<MovieForm />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

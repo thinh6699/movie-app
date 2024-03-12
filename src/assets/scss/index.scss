@@ -75,3 +75,10 @@
   pointer-events: auto !important;
   cursor: not-allowed !important;
 }
+
+.main-bg {
+  background: url('../../assets/images/main-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

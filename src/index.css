@@ -19,10 +19,3 @@ body {
 fieldset {
   border: none !important;
 }
-
-.main-bg {
-  background: url('./assets/images/main-bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}

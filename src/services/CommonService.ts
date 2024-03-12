@@ -1,4 +1,4 @@
-import { appendFormData } from '../helpers'
+import { appendFormData } from 'helpers'
 import baseAxios from './base'
 
 export const uploadFile = (data: any) => {

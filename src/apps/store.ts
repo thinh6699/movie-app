@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
-import UserInfo from '../stores/UserInfo'
+import UserInfo from 'stores/UserInfo'
 
 const reducers = combineReducers({
   userInfo: UserInfo,

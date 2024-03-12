@@ -1,4 +1,4 @@
-import { IMovie } from '../../models'
+import { IMovie } from 'models'
 import { Rating } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 

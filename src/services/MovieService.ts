@@ -1,5 +1,5 @@
 import baseAxios from './base'
-import { IMovie } from './../models/index'
+import { IMovie } from 'models/index'
 
 const baseUrl = 'movies'
 

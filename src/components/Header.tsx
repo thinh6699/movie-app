@@ -1,14 +1,15 @@
-import logo from '../assets/images/logo.png'
-import { Link } from 'react-router-dom'
+import logo from 'assets/images/logo.png'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { ChangeThemeSwitch } from '../helpers'
+import { ChangeThemeSwitch } from 'helpers'
 import MenuIcon from '@mui/icons-material/Menu'
-import { IHeaderMenu } from '../models'
-import Path from '../routers/Path'
+import { IHeaderMenu } from 'models'
+import Path from 'routers/Path'
 
 function Header() {
+  const navigate = useNavigate()
   const lstMenu: IHeaderMenu[] = [
     {
       id: 1,
@@ -54,6 +55,7 @@ function Header() {
             </FormGroup>
 
             <Button
+              onClick={() => navigate(Path.login)}
               variant='contained'
               classes={{
                 root: '!rounded-full !uppercase !bg-loginBtnBg !font-semibold'
